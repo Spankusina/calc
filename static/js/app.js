@@ -5,12 +5,12 @@ const App = {
             displayValue: '0',
             firstValue: 0,
             secondValue: 0,
-            sign: ''
+            action: ''
         }
     },
     methods: {
         onClickButton(char) {
-            if (this.sign && !this.secondValue && !['-', '*', '/', '+'].includes(char)) {
+            if (this.action && !this.secondValue && !['-', '*', '/', '+'].includes(char)) {
                 this.displayValue = '0'
             }
 
@@ -58,26 +58,26 @@ const App = {
             this.displayValue = '0'
             this.firstValue = 0
             this.secondValue = 0
-            this.sign = ''
+            this.action = ''
             this.unactiveButtons()
         },
         backspace() {
             this.displayValue = this.displayValue != '0' && this.displayValue.length > 1 ? this.displayValue.slice(0, -1) : '0'
         },
         updateValues() {
-            if (!this.sign){
-                this.firstValue = parseFloat(this.displayValue)
+            if (!this.action){
+                this.firstValue = Number(this.displayValue)
             }
             else {
-                this.secondValue = parseFloat(this.displayValue)
+                this.secondValue = Number(this.displayValue)
             }
         },
         procedure(char) {
-            if (this.sign && this.secondValue){
+            if (this.action && this.secondValue){
                 this.calculation()
             }
 
-            this.sign = char
+            this.action = char
             this.unactiveButtons()
             const buttons = document.querySelectorAll('.btn')
             buttons.forEach(button =>  {
@@ -88,26 +88,26 @@ const App = {
             })
         },
         equals() {
-            this.secondValue = parseFloat(this.displayValue)
+            this.secondValue = Number(this.displayValue)
             this.calculation()
             this.unactiveButtons()
         },
         calculation() {
-            if (this.sign === '+'){
+            if (this.action === '+'){
                 this.displayValue = this.firstValue + this.secondValue
             }
-            else if (this.sign === '-'){
+            else if (this.action === '-'){
                 this.displayValue = this.firstValue - this.secondValue
             }
-            else if (this.sign === '*'){
+            else if (this.action === '*'){
                 this.displayValue = this.firstValue * this.secondValue
             }
-            else if (this.sign === '/'){
+            else if (this.action === '/'){
                 this.displayValue = this.firstValue / this.secondValue
             }
             this.firstValue = this.displayValue
             this.secondValue = 0
-            this.sign = ''
+            this.action = ''
         },
         unactiveButtons() {
             const activeButtons = document.querySelectorAll('.active')
@@ -117,10 +117,10 @@ const App = {
             })
         },
         switchPlusMinus() {
-            if(parseFloat(this.displayValue) > 0){
+            if(Number(this.displayValue) > 0){
                 this.displayValue = '-' + this.displayValue
             }
-            else if (parseFloat(this.displayValue) === 0) {
+            else if (Number(this.displayValue) === 0) {
                 return
             }
             else {
@@ -128,7 +128,7 @@ const App = {
             }
         },
         sqrt() {
-            this.displayValue = Math.sqrt(parseFloat(this.displayValue))
+            this.displayValue = Math.sqrt(Number(this.displayValue))
             this.updateValues()
         }
     },
